@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MassPay - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="/styles.css"/>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased selection:bg-pink-100 selection:text-pink-700">
+
+<div class="aplicacao min-h-screen">
+
+  <!-- BARRA LATERAL -->
+  <aside class="barra-lateral" id="barra-lateral">
+    <div class="barra-lateral__logo">
+      <img 
+      src="/imagens/LogoMassPaySitePNG.png" 
+      alt="MassPay Logo" 
+      class="barra-lateral__logo-imagem select-none"
+      />
+    </div>
+    <nav class="barra-lateral__nav">
+      <p class="barra-lateral__grupo">Menu</p>
+      <ul>
+        <li><a href="#" class="nav-item nav-item--ativo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="wallet"></i><span>Minha carteira</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="arrow-left-right"></i><span>Transferências</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="receipt"></i><span>Transações</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="qr-code"></i><span>Pagamentos</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="credit-card"></i><span>Cartões</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="trending-up"></i><span>Investimentos</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="banknote"></i><span>Empréstimos</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="smartphone"></i><span>Recargas</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="gift"></i><span>Benefícios</span></a></li>
+      </ul>
+      <p class="barra-lateral__grupo">Conta</p>
+      <ul>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="user"></i><span>Perfil</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="shield"></i><span>Segurança</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="bell"></i><span>Notificações</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="settings"></i><span>Configurações</span></a></li>
+        <li><a href="#" class="nav-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="help-circle"></i><span>Ajuda</span></a></li>
+      </ul>
+    </nav>
+    <div class="barra-lateral__rodape">
+      <a href="#" class="nav-item nav-item--perigo focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"><i data-lucide="log-out"></i><span>Sair</span></a>
+    </div>
+  </aside>
+
+  <!-- SOBREPOSIÇÃO MOBILE -->
+  <div class="sobreposicao escondido" id="sobreposicao" onclick="fecharMenu()"></div>
+
+  <!-- ÁREA PRINCIPAL -->
+  <div class="area-principal">
+
+    <!-- CABEÇALHO -->
+    <header class="cabecalho">
+      <div class="cabecalho__esquerda">
+        <button class="cabecalho__btn-menu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2" onclick="abrirMenu()">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="cabecalho__saudacao">
+          <p class="cabecalho__saudacao-sub">Bem-vindo de volta 👋</p>
+          <h1 class="cabecalho__saudacao-nome">Olá, Gabriel!</h1>
+        </div>
+      </div>
+      <div class="cabecalho__acoes">
+        <button class="botao-secundario focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="credit-card"></i><span>Gerenciar cartões</span></button>
+        <button class="botao-secundario focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="download"></i><span>Exportar</span></button>
+        <button class="botao-principal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="plus"></i><span>Novo pagamento</span></button>
+        <div class="cabecalho__avatar select-none" title="Gabriel Massimini">GM</div>
+      </div>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <main class="conteudo">
+
+      <!-- SEÇÃO 1: CARTÕES DE SALDO -->
+      <div class="grade-cartoes">
+
+        <div class="cartao cartao--rosa">
+          <div class="cartao__topo">
+            <span class="cartao__rotulo">Saldo total</span>
+            <div class="cartao__icone cartao__icone--branco"><i data-lucide="wallet"></i></div>
+          </div>
+          <p class="cartao__valor">R$ 4.680,50</p>
+          <p class="cartao__rodape">Disponível em conta</p>
+        </div>
+
+        <div class="cartao cartao--branco">
+          <div class="cartao__topo">
+            <span class="cartao__rotulo">Entradas <span class="seta-verde">↗</span></span>
+            <div class="cartao__icone cartao__icone--verde"><i data-lucide="trending-up"></i></div>
+          </div>
+          <p class="cartao__valor">R$ 7.850,00</p>
+          <p class="cartao__rodape cor-verde">Este mês</p>
+        </div>
+
+        <div class="cartao cartao--branco">
+          <div class="cartao__topo">
+            <span class="cartao__rotulo">Saídas <span class="seta-vermelha">↘</span></span>
+            <div class="cartao__icone cartao__icone--vermelho"><i data-lucide="trending-down"></i></div>
+          </div>
+          <p class="cartao__valor">R$ 3.169,50</p>
+          <p class="cartao__rodape cor-vermelho">Este mês</p>
+        </div>
+
+        <div class="cartao cartao--branco">
+          <div class="cartao__topo">
+            <span class="cartao__rotulo">Economia do mês</span>
+            <div class="cartao__icone cartao__icone--roxo"><i data-lucide="piggy-bank"></i></div>
+          </div>
+          <p class="cartao__valor">R$ 1.280,50</p>
+          <p class="cartao__rodape cor-cinza">Total economizado</p>
+        </div>
+
+      </div>
+
+      <!-- SEÇÃO 2: GRÁFICOS -->
+      <div class="grade-graficos">
+
+        <div class="caixa-grafico">
+          <div class="caixa-grafico__cabecalho">
+            <div>
+              <h2 class="caixa-grafico__titulo">Fluxo de caixa</h2>
+              <p class="caixa-grafico__subtitulo">Entradas e saídas ao longo do mês</p>
+            </div>
+            <span class="emblema select-none">Este mês ▾</span>
+          </div>
+          <div class="caixa-grafico__area">
+            <canvas id="grafico-fluxo"></canvas>
+          </div>
+        </div>
+
+        <div class="caixa-grafico">
+          <div class="caixa-grafico__cabecalho">
+            <div>
+              <h2 class="caixa-grafico__titulo">Distribuição de gastos</h2>
+              <p class="caixa-grafico__subtitulo">Este mês</p>
+            </div>
+            <span class="emblema select-none">Este mês ▾</span>
+          </div>
+          <div class="caixa-grafico__rosca">
+            <canvas id="grafico-rosca"></canvas>
+            <div class="caixa-grafico__rosca-centro">
+              <p class="caixa-grafico__rosca-valor">R$ 3.169,50</p>
+              <p class="caixa-grafico__rosca-texto">Total</p>
+            </div>
+          </div>
+          <ul class="legenda-categorias">
+            <li><span class="legenda-categorias__ponto" style="background:#ED145B"></span><span class="legenda-categorias__nome">Moradia</span><span class="legenda-categorias__pct">35%</span><span class="legenda-categorias__valor">R$ 1.109,32</span></li>
+            <li><span class="legenda-categorias__ponto" style="background:#60a5fa"></span><span class="legenda-categorias__nome">Alimentação</span><span class="legenda-categorias__pct">25%</span><span class="legenda-categorias__valor">R$ 792,37</span></li>
+            <li><span class="legenda-categorias__ponto" style="background:#facc15"></span><span class="legenda-categorias__nome">Transporte</span><span class="legenda-categorias__pct">15%</span><span class="legenda-categorias__valor">R$ 475,42</span></li>
+            <li><span class="legenda-categorias__ponto" style="background:#4ade80"></span><span class="legenda-categorias__nome">Lazer</span><span class="legenda-categorias__pct">10%</span><span class="legenda-categorias__valor">R$ 316,95</span></li>
+            <li><span class="legenda-categorias__ponto" style="background:#c084fc"></span><span class="legenda-categorias__nome">Saúde</span><span class="legenda-categorias__pct">8%</span><span class="legenda-categorias__valor">R$ 253,56</span></li>
+            <li><span class="legenda-categorias__ponto" style="background:#94a3b8"></span><span class="legenda-categorias__nome">Outros</span><span class="legenda-categorias__pct">7%</span><span class="legenda-categorias__valor">R$ 221,88</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- SEÇÃO 3: TRANSAÇÕES + LATERAL -->
+      <div class="grade-inferior">
+
+        <!-- TRANSAÇÕES -->
+        <div class="caixa">
+          <div class="caixa__cabecalho">
+            <h2 class="caixa__titulo">Transações recentes</h2>
+            <a href="#" class="link-rosa focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2">Ver todas</a>
+          </div>
+          <ul class="lista-transacoes">
+            <li class="transacao">
+              <div class="transacao__icone transacao__icone--verde"><i data-lucide="shopping-cart"></i></div>
+              <div class="transacao__info">
+                <p class="transacao__nome">Supermercado Bom Preço</p>
+                <p class="transacao__meta"><span>Alimentação</span> · Hoje, 10:45</p>
+              </div>
+              <span class="transacao__valor transacao__valor--saida">- R$ 128,64</span>
+            </li>
+            <li class="transacao">
+              <div class="transacao__icone transacao__icone--rosa"><i data-lucide="briefcase"></i></div>
+              <div class="transacao__info">
+                <p class="transacao__nome">Salário</p>
+                <p class="transacao__meta"><span>Receita</span> · Hoje, 08:30</p>
+              </div>
+              <span class="transacao__valor transacao__valor--entrada">+ R$ 3.500,00</span>
+            </li>
+            <li class="transacao">
+              <div class="transacao__icone transacao__icone--amarelo"><i data-lucide="car"></i></div>
+              <div class="transacao__info">
+                <p class="transacao__nome">Uber</p>
+                <p class="transacao__meta"><span>Transporte</span> · Ontem, 19:15</p>
+              </div>
+              <span class="transacao__valor transacao__valor--saida">- R$ 34,90</span>
+            </li>
+            <li class="transacao">
+              <div class="transacao__icone transacao__icone--roxo"><i data-lucide="pill"></i></div>
+              <div class="transacao__info">
+                <p class="transacao__nome">Farmácia Pague Menos</p>
+                <p class="transacao__meta"><span>Saúde</span> · Ontem, 14:22</p>
+              </div>
+              <span class="transacao__valor transacao__valor--saida">- R$ 56,90</span>
+            </li>
+            <li class="transacao">
+              <div class="transacao__icone transacao__icone--azul"><i data-lucide="send"></i></div>
+              <div class="transacao__info">
+                <p class="transacao__nome">Transferência recebida</p>
+                <p class="transacao__meta"><span>Transferência</span> · 21 de Abril, 11:05</p>
+              </div>
+              <span class="transacao__valor transacao__valor--entrada">+ R$ 200,00</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- COLUNA LATERAL -->
+        <div class="coluna-lateral">
+
+          <!-- CARTÃO DE CRÉDITO -->
+          <div class="caixa">
+            <div class="caixa__cabecalho">
+              <h2 class="caixa__titulo">Cartões</h2>
+              <a href="#" class="link-rosa focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2">Ver todos</a>
+            </div>
+            <div class="cartao-credito">
+              <div class="cartao-credito__circulo cartao-credito__circulo--1"></div>
+              <div class="cartao-credito__circulo cartao-credito__circulo--2"></div>
+              <div class="cartao-credito__cabecalho">
+                <div class="cartao-credito__marca">
+                  <div class="cartao-credito__logo">MP</div>
+                  <span>Mass Pay</span>
+                </div>
+                <i data-lucide="wifi" class="cartao-credito__sinal"></i>
+              </div>
+              <p class="cartao-credito__numero">**** **** **** 4321</p>
+              <div class="cartao-credito__rodape">
+                <div>
+                  <p class="cartao-credito__campo-rotulo">Titular</p>
+                  <p class="cartao-credito__campo-valor">GABRIEL M JUNQUEIRA</p>
+                </div>
+                <div class="cartao-credito__bandeira">VISA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LIMITE -->
+          <div class="caixa caixa--limite">
+            <div class="caixa__cabecalho">
+              <h2 class="caixa__titulo">Limite disponível</h2>
+              <a href="#" class="link-rosa focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2">Ver todas</a>
+            </div>
+            <p class="limite__valor">R$ 1.230,00</p>
+            <p class="limite__subtexto">de R$ 2.000,00</p>
+            <div class="barra-progresso">
+              <div class="barra-progresso__preenchimento" style="width:61%"></div>
+            </div>
+            <p class="limite__porcentagem">61% utilizado</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SEÇÃO 4: LIMITES DA CONTA -->
+      <div class="secao-cabecalho">
+        <h2 class="secao-cabecalho__titulo">Limites da conta</h2>
+        <a href="#" class="link-rosa focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2">Configurar limites</a>
+      </div>
+      <div class="grade-limites">
+
+        <div class="cartao-limite">
+          <div class="cartao-limite__linha">
+            <div class="cartao-limite__icone"><i data-lucide="zap"></i></div>
+            <div class="cartao-limite__texto">
+              <p class="cartao-limite__nome">Pix (diário)</p>
+              <p class="cartao-limite__descricao">R$ 3.000,00 de R$ 5.000,00</p>
+            </div>
+            <span class="cartao-limite__porcentagem">60%</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso__preenchimento" style="width:60%"></div></div>
+        </div>
+
+        <div class="cartao-limite">
+          <div class="cartao-limite__linha">
+            <div class="cartao-limite__icone"><i data-lucide="arrow-left-right"></i></div>
+            <div class="cartao-limite__texto">
+              <p class="cartao-limite__nome">Transferências (diário)</p>
+              <p class="cartao-limite__descricao">R$ 2.500,00 de R$ 5.000,00</p>
+            </div>
+            <span class="cartao-limite__porcentagem">50%</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso__preenchimento" style="width:50%"></div></div>
+        </div>
+
+        <div class="cartao-limite">
+          <div class="cartao-limite__linha">
+            <div class="cartao-limite__icone"><i data-lucide="receipt"></i></div>
+            <div class="cartao-limite__texto">
+              <p class="cartao-limite__nome">Pagamentos (diário)</p>
+              <p class="cartao-limite__descricao">R$ 1.200,00 de R$ 2.000,00</p>
+            </div>
+            <span class="cartao-limite__porcentagem">60%</span>
+          </div>
+          <div class="barra-progresso"><div class="barra-progresso__preenchimento" style="width:60%"></div></div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  function abrirMenu() {
+    document.getElementById('barra-lateral').classList.add('barra-lateral--aberta');
+    document.getElementById('sobreposicao').classList.remove('escondido');
+  }
+
+  function fecharMenu() {
+    document.getElementById('barra-lateral').classList.remove('barra-lateral--aberta');
+    document.getElementById('sobreposicao').classList.add('escondido');
+  }
+
+  const ctxFluxo = document.getElementById('grafico-fluxo').getContext('2d');
+  const gradienteEntrada = ctxFluxo.createLinearGradient(0, 0, 0, 260);
+  gradienteEntrada.addColorStop(0, 'rgba(34,197,94,0.15)');
+  gradienteEntrada.addColorStop(1, 'rgba(34,197,94,0)');
+  const gradienteSaida = ctxFluxo.createLinearGradient(0, 0, 0, 260);
+  gradienteSaida.addColorStop(0, 'rgba(237,20,91,0.12)');
+  gradienteSaida.addColorStop(1, 'rgba(237,20,91,0)');
+
+  new Chart(ctxFluxo, {
+    type: 'line',
+    data: {
+      labels: ['01 Mai','05 Mai','10 Mai','15 Mai','20 Mai','25 Mai','30 Mai'],
+      datasets: [
+        {
+          label: 'Entradas',
+          data: [1200, 4700, 4700, 5300, 6800, 7200, 7850],
+          borderColor: '#22c55e',
+          backgroundColor: gradienteEntrada,
+          fill: true, tension: 0.45,
+          pointBackgroundColor: '#22c55e',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          borderWidth: 2.5
+        },
+        {
+          label: 'Saídas',
+          data: [300, 800, 1400, 1900, 2400, 2900, 3169],
+          borderColor: '#ED145B',
+          backgroundColor: gradienteSaida,
+          fill: true, tension: 0.45,
+          pointBackgroundColor: '#ED145B',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          borderWidth: 2.5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top', align: 'end',
+          labels: { font: { family: 'Poppins', size: 12 }, usePointStyle: true, padding: 20, color: '#4b5563' }
+        },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#111827', bodyColor: '#6b7280',
+          borderColor: '#e5e7eb', borderWidth: 1, padding: 14,
+          titleFont: { family: 'Poppins', weight: '600', size: 13 },
+          bodyFont: { family: 'Poppins', size: 12 },
+          callbacks: { label: c => ` ${c.dataset.label}: R$ ${c.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, border: { display: false }, ticks: { font: { family: 'Poppins', size: 11 }, color: '#9ca3af', padding: 8 } },
+        y: { grid: { color: '#f3f4f6' }, border: { display: false }, ticks: { font: { family: 'Poppins', size: 11 }, color: '#9ca3af', padding: 10, callback: v => 'R$ ' + (v >= 1000 ? (v/1000).toFixed(0)+'k' : v) } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('grafico-rosca').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Moradia','Alimentação','Transporte','Lazer','Saúde','Outros'],
+      datasets: [{
+        data: [35, 25, 15, 10, 8, 7],
+        backgroundColor: ['#ED145B','#60a5fa','#facc15','#4ade80','#c084fc','#94a3b8'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '72%',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#fff', titleColor: '#111827', bodyColor: '#6b7280',
+          borderColor: '#e5e7eb', borderWidth: 1, padding: 12,
+          titleFont: { family: 'Poppins', weight: '600' },
+          bodyFont: { family: 'Poppins' },
+          callbacks: { label: c => ` ${c.label}: ${c.raw}%` }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
