@@ -10,7 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="/styles.css"/>
+  <link href="./style.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased selection:bg-pink-100 selection:text-pink-700">
 
@@ -21,7 +21,7 @@
     <div class="barra-lateral__logo">
       <img 
       src="/imagens/LogoMassPaySitePNG.png" 
-      alt="MassPay Logo" 
+      alt="Logo MassPay" 
       class="barra-lateral__logo-imagem select-none"
       />
     </div>
@@ -62,18 +62,16 @@
     <!-- CABEÇALHO -->
     <header class="cabecalho">
       <div class="cabecalho__esquerda">
-        <button class="cabecalho__btn-menu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2" onclick="abrirMenu()">
-          <i data-lucide="menu"></i>
-        </button>
+        <button type="button" class="cabecalho__btn-menu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2" aria-label="Abrir menu de navegação" onclick="abrirMenu()"><i data-lucide="menu"></i></button>
         <div class="cabecalho__saudacao">
           <p class="cabecalho__saudacao-sub">Bem-vindo de volta 👋</p>
           <h1 class="cabecalho__saudacao-nome">Olá, Gabriel!</h1>
         </div>
       </div>
       <div class="cabecalho__acoes">
-        <button class="botao-secundario focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="credit-card"></i><span>Gerenciar cartões</span></button>
-        <button class="botao-secundario focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="download"></i><span>Exportar</span></button>
-        <button class="botao-principal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="plus"></i><span>Novo pagamento</span></button>
+        <button type="button" class="botao-secundario focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="credit-card"></i><span>Gerenciar cartões</span></button>
+        <button type="button" class="botao-secundario focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="download"></i><span>Exportar</span></button>
+        <button type="button" class="botao-principal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2"><i data-lucide="plus"></i><span>Novo pagamento</span></button>
         <div class="cabecalho__avatar select-none" title="Gabriel Massimini">GM</div>
       </div>
     </header>
@@ -307,7 +305,7 @@
           </div>
           <div class="barra-progresso"><div class="barra-progresso__preenchimento" style="width:60%"></div></div>
         </div>
-
+        
       </div>
 
     </main>
