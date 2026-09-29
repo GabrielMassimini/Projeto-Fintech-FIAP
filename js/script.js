@@ -1,71 +1,56 @@
+// Dashboard MassPay: menu mobile e gráficos.
+// Os valores exibidos são fictícios; a integração com o backend fica para uma próxima etapa.
+
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
-  sincronizarResumoConta();
-  sincronizarCartao();
-  sincronizarTransacoesRecentes();
+  configurarMenuMobile();
   inicializarGraficoFluxoDeCaixa();
   inicializarGraficoDistribuicaoDeGastos();
 });
 
-// ---------- DADOS DINÂMICOS (storage.js) ----------
+// ---------- MENU MOBILE ----------
 
-function sincronizarResumoConta() {
-  const conta = MassPayDB.getConta();
-  const transacoes = MassPayDB.listarTransacoes();
-  const agora = new Date();
+function configurarMenuMobile() {
+  const botaoMenu = document.getElementById('botao-menu');
+  const sobreposicao = document.getElementById('sobreposicao');
 
-  const doMes = transacoes.filter((t) => {
-    const data = new Date(t.data);
-    return data.getMonth() === agora.getMonth() && data.getFullYear() === agora.getFullYear();
+  botaoMenu.addEventListener('click', abrirMenu);
+  sobreposicao.addEventListener('click', fecharMenu);
+
+  // Esc fecha o menu, como em qualquer painel lateral
+  document.addEventListener('keydown', (evento) => {
+    if (evento.key === 'Escape') fecharMenu();
   });
-
-  const entradas = doMes.filter((t) => t.tipo === 'entrada').reduce((soma, t) => soma + t.valor, 0);
-  const saidas = doMes.filter((t) => t.tipo === 'saida').reduce((soma, t) => soma + t.valor, 0);
-  const economia = Math.max(entradas - saidas, 0);
-
-  document.getElementById('dash-saldo-total').textContent = formatarMoeda(conta.saldo);
-  document.getElementById('dash-entradas-mes').textContent = formatarMoeda(entradas);
-  document.getElementById('dash-saidas-mes').textContent = formatarMoeda(saidas);
-  document.getElementById('dash-economia-mes').textContent = formatarMoeda(economia);
 }
 
-function sincronizarCartao() {
-  const [cartao] = MassPayDB.listarCartoes();
-  if (!cartao) return;
-
-  document.getElementById('dash-cartao-numero').textContent = cartao.numero;
-  document.getElementById('dash-cartao-titular').textContent = cartao.titular;
-  document.getElementById('dash-cartao-bandeira').textContent = cartao.bandeira;
-
-  const percentualUtilizado = Math.round(((cartao.limite - cartao.limiteDisponivel) / cartao.limite) * 100);
-
-  document.getElementById('dash-limite-valor').textContent = formatarMoeda(cartao.limiteDisponivel);
-  document.getElementById('dash-limite-subtexto').textContent = 'de ' + formatarMoeda(cartao.limite);
-  document.getElementById('dash-limite-barra').style.width = percentualUtilizado + '%';
-  document.getElementById('dash-limite-porcentagem').textContent = percentualUtilizado + '% utilizado';
+function abrirMenu() {
+  document.getElementById('barra-lateral').classList.add('barra-lateral--aberta');
+  document.getElementById('sobreposicao').classList.remove('escondido');
+  document.getElementById('botao-menu').setAttribute('aria-expanded', 'true');
 }
 
-function sincronizarTransacoesRecentes() {
-  const lista = document.getElementById('dash-lista-transacoes');
-  renderizarListaTransacoes(lista, MassPayDB.listarTransacoes().slice(0, 5));
+function fecharMenu() {
+  document.getElementById('barra-lateral').classList.remove('barra-lateral--aberta');
+  document.getElementById('sobreposicao').classList.add('escondido');
+  document.getElementById('botao-menu').setAttribute('aria-expanded', 'false');
 }
 
 // ---------- GRÁFICOS ----------
- 
+
 function inicializarGraficoFluxoDeCaixa() {
   const canvas = document.getElementById('grafico-fluxo');
   if (!canvas) return;
- 
+
   const ctx = canvas.getContext('2d');
- 
+
   const gradienteEntrada = ctx.createLinearGradient(0, 0, 0, 260);
   gradienteEntrada.addColorStop(0, 'rgba(34,197,94,0.15)');
   gradienteEntrada.addColorStop(1, 'rgba(34,197,94,0)');
- 
+
   const gradienteSaida = ctx.createLinearGradient(0, 0, 0, 260);
   gradienteSaida.addColorStop(0, 'rgba(237,20,91,0.12)');
   gradienteSaida.addColorStop(1, 'rgba(237,20,91,0)');
- 
+
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -145,11 +130,11 @@ function inicializarGraficoFluxoDeCaixa() {
     }
   });
 }
- 
+
 function inicializarGraficoDistribuicaoDeGastos() {
   const canvas = document.getElementById('grafico-rosca');
   if (!canvas) return;
- 
+
   new Chart(canvas.getContext('2d'), {
     type: 'doughnut',
     data: {

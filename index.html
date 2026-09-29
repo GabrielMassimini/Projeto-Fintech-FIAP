@@ -10,8 +10,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="/css/style.css"/>
-  <script src="/js/script.js" defer></script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="js/script.js" defer></script>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased selection:bg-pink-100 selection:text-pink-700">
 
@@ -21,7 +21,7 @@
   <aside class="barra-lateral" id="barra-lateral">
     <div class="barra-lateral__logo">
       <img 
-      src="/imagens/LogoMassPaySitePNG.png" 
+      src="imagens/LogoMassPaySitePNG.png"
       alt="Logo MassPay" 
       class="barra-lateral__logo-imagem select-none"
       />
@@ -55,7 +55,7 @@
   </aside>
 
   <!-- SOBREPOSIÇÃO MOBILE -->
-  <div class="sobreposicao escondido" id="sobreposicao" onclick="fecharMenu()"></div>
+  <div class="sobreposicao escondido" id="sobreposicao"></div>
 
   <!-- ÁREA PRINCIPAL -->
   <div class="area-principal">
@@ -63,7 +63,7 @@
     <!-- CABEÇALHO -->
     <header class="cabecalho">
       <div class="cabecalho__esquerda">
-        <button type="button" class="cabecalho__btn-menu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2" aria-label="Abrir menu de navegação" onclick="abrirMenu()"><i data-lucide="menu"></i></button>
+        <button type="button" class="cabecalho__btn-menu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2" id="botao-menu" aria-label="Abrir menu de navegação" aria-controls="barra-lateral" aria-expanded="false"><i data-lucide="menu"></i></button>
         <div class="cabecalho__saudacao">
           <p class="cabecalho__saudacao-sub">Bem-vindo de volta 👋</p>
           <h1 class="cabecalho__saudacao-nome">Olá, Gabriel!</h1>
@@ -313,112 +313,5 @@
   </div>
 </div>
 
-<script>
-  lucide.createIcons();
-
-  function abrirMenu() {
-    document.getElementById('barra-lateral').classList.add('barra-lateral--aberta');
-    document.getElementById('sobreposicao').classList.remove('escondido');
-  }
-
-  function fecharMenu() {
-    document.getElementById('barra-lateral').classList.remove('barra-lateral--aberta');
-    document.getElementById('sobreposicao').classList.add('escondido');
-  }
-
-  const ctxFluxo = document.getElementById('grafico-fluxo').getContext('2d');
-  const gradienteEntrada = ctxFluxo.createLinearGradient(0, 0, 0, 260);
-  gradienteEntrada.addColorStop(0, 'rgba(34,197,94,0.15)');
-  gradienteEntrada.addColorStop(1, 'rgba(34,197,94,0)');
-  const gradienteSaida = ctxFluxo.createLinearGradient(0, 0, 0, 260);
-  gradienteSaida.addColorStop(0, 'rgba(237,20,91,0.12)');
-  gradienteSaida.addColorStop(1, 'rgba(237,20,91,0)');
-
-  new Chart(ctxFluxo, {
-    type: 'line',
-    data: {
-      labels: ['01 Mai','05 Mai','10 Mai','15 Mai','20 Mai','25 Mai','30 Mai'],
-      datasets: [
-        {
-          label: 'Entradas',
-          data: [1200, 4700, 4700, 5300, 6800, 7200, 7850],
-          borderColor: '#22c55e',
-          backgroundColor: gradienteEntrada,
-          fill: true, tension: 0.45,
-          pointBackgroundColor: '#22c55e',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          borderWidth: 2.5
-        },
-        {
-          label: 'Saídas',
-          data: [300, 800, 1400, 1900, 2400, 2900, 3169],
-          borderColor: '#ED145B',
-          backgroundColor: gradienteSaida,
-          fill: true, tension: 0.45,
-          pointBackgroundColor: '#ED145B',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
-          borderWidth: 2.5
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: {
-          position: 'top', align: 'end',
-          labels: { font: { family: 'Poppins', size: 12 }, usePointStyle: true, padding: 20, color: '#4b5563' }
-        },
-        tooltip: {
-          backgroundColor: '#fff',
-          titleColor: '#111827', bodyColor: '#6b7280',
-          borderColor: '#e5e7eb', borderWidth: 1, padding: 14,
-          titleFont: { family: 'Poppins', weight: '600', size: 13 },
-          bodyFont: { family: 'Poppins', size: 12 },
-          callbacks: { label: c => ` ${c.dataset.label}: R$ ${c.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` }
-        }
-      },
-      scales: {
-        x: { grid: { display: false }, border: { display: false }, ticks: { font: { family: 'Poppins', size: 11 }, color: '#9ca3af', padding: 8 } },
-        y: { grid: { color: '#f3f4f6' }, border: { display: false }, ticks: { font: { family: 'Poppins', size: 11 }, color: '#9ca3af', padding: 10, callback: v => 'R$ ' + (v >= 1000 ? (v/1000).toFixed(0)+'k' : v) } }
-      }
-    }
-  });
-
-  new Chart(document.getElementById('grafico-rosca').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Moradia','Alimentação','Transporte','Lazer','Saúde','Outros'],
-      datasets: [{
-        data: [35, 25, 15, 10, 8, 7],
-        backgroundColor: ['#ED145B','#60a5fa','#facc15','#4ade80','#c084fc','#94a3b8'],
-        borderWidth: 0,
-        hoverOffset: 8
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '72%',
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#fff', titleColor: '#111827', bodyColor: '#6b7280',
-          borderColor: '#e5e7eb', borderWidth: 1, padding: 12,
-          titleFont: { family: 'Poppins', weight: '600' },
-          bodyFont: { family: 'Poppins' },
-          callbacks: { label: c => ` ${c.label}: ${c.raw}%` }
-        }
-      }
-    }
-  });
-</script>
 </body>
 </html>
