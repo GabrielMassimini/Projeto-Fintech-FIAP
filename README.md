@@ -1,28 +1,29 @@
 # MassPay
 
-Dashboard de uma fintech fictícia que desenvolvi no Challenge da FIAP, durante o curso de Análise e Desenvolvimento de Sistemas.
+Plataforma de uma fintech fictícia que estou desenvolvendo ao longo do primeiro ano do curso de Análise e Desenvolvimento de Sistemas na FIAP. O projeto evolui por etapas: começa pelo front-end e depois recebe backend, banco de dados e APIs, conforme avanço no curso.
 
 **Acesse:** https://gabrielmassimini.github.io/Projeto-Fintech-FIAP/
 
 ![Dashboard MassPay no desktop](docs/dashboard-desktop.jpg)
 
-## Sobre o projeto
+## Estágio atual
 
-A proposta do Challenge era criar a interface de uma fintech. Nesta primeira fase fiz o dashboard principal, com resumo da conta, gráfico de fluxo de caixa, distribuição de gastos por categoria, transações recentes, cartão e limites da conta. Os valores são fictícios, porque o projeto ainda não tem backend.
+Até agora desenvolvi o **dashboard principal**, com layout responsivo. Ele mostra o resumo da conta, um gráfico de fluxo de caixa, a distribuição de gastos por categoria, as transações recentes, o cartão e os limites da conta. Os valores ainda são fictícios, porque o projeto não tem backend.
 
 No celular, a barra lateral vira um menu que abre pelo botão ☰.
 
 <img src="docs/dashboard-mobile.jpg" alt="Dashboard MassPay no celular" width="260">
 
-Também modelei em Java as entidades do sistema (`Usuario`, `Conta`, `Cartao`, `Transacao`, `Investimento` e `Emprestimo`). Elas vão servir de base para o backend nas próximas etapas.
+Também comecei a parte em Java, modelando as entidades do sistema (`Usuario`, `Conta`, `Cartao`, `Transacao`, `Investimento` e `Emprestimo`), que vão servir de base para o backend.
 
-## Tecnologias
+## Tecnologias usadas até aqui
 
-- HTML e CSS (variáveis, Grid, Flexbox e media queries)
+- HTML
+- CSS
 - Tailwind CSS
 - JavaScript
-- Chart.js para os gráficos e Lucide para os ícones
-- Java
+- Chart.js
+- Java (modelagem das classes)
 
 ## Como rodar
 
@@ -42,9 +43,10 @@ git clone https://github.com/GabrielMassimini/Projeto-Fintech-FIAP.git
 
 ## Próximos passos
 
-- Backend em Java com banco de dados
-- Dados dinâmicos no dashboard
-- Demais telas do menu, login e cadastro
+- Banco de dados
+- Backend em Java e APIs
+- Dados reais no dashboard, no lugar dos valores fictícios
+- Demais páginas da plataforma (carteira, transferências, cartões, investimentos, login e cadastro)
 
 ## Contato
 
