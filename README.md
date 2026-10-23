@@ -41,6 +41,10 @@ git clone https://github.com/GabrielMassimini/Projeto-Fintech-FIAP.git
 - Modelar entidades com orientação a objetos em Java (encapsulamento, construtores, getters e setters).
 - Publicar o site no GitHub Pages. Aqui tive um problema: meus caminhos começavam com `/` (por exemplo, `/css/style.css`). Isso funcionava no meu computador, mas no GitHub Pages o site fica dentro de uma subpasta, e o CSS e o JavaScript não carregavam. Nessa etapa de revisão e publicação usei o Claude (IA) como mentor. Com ele entendi a diferença entre caminhos absolutos e relativos, reorganizei os arquivos e tirei o JavaScript de dentro do HTML.
 
+## Uso de IA
+
+Desenvolvo o MassPay junto com IA. Uso o **Claude Code**, assistente de programação da Anthropic, como parceiro de programação: escrevo o código junto com ele, tiro dúvidas e peço revisão antes de publicar. Vou seguir trabalhando assim nas próximas etapas (banco de dados, backend em Java e APIs).
+
 ## Próximos passos
 
 - Banco de dados
