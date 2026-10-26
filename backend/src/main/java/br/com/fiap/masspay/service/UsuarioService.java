@@ -5,6 +5,7 @@ import br.com.fiap.masspay.exception.CredenciaisInvalidasException;
 import br.com.fiap.masspay.exception.RecursoNaoEncontradoException;
 import br.com.fiap.masspay.exception.RegraNegocioException;
 import br.com.fiap.masspay.model.Usuario;
+import br.com.fiap.masspay.repository.ContaRepository;
 import br.com.fiap.masspay.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ContaRepository contaRepository;
 
     public Usuario salvar(Usuario usuario) {
         if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
@@ -80,6 +84,9 @@ public class UsuarioService {
 
     public void excluir(Long id) {
         Usuario usuario = buscarPorId(id);
+        if (contaRepository.existsByUsuarioId(id)) {
+            throw new ConflitoException("O usuário tem contas abertas. Exclua as contas antes de excluir o usuário");
+        }
         usuarioRepository.delete(usuario);
     }
 
