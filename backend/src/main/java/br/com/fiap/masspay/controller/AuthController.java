@@ -19,6 +19,6 @@ public class AuthController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public Usuario login(@RequestBody @Valid LoginRequest login) {
-        return usuarioService.autenticar(login.email(), login.senha());
+        return usuarioService.autenticar(login.getEmail(), login.getSenha());
     }
 }
