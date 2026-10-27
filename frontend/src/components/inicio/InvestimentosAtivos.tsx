@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { LuTrendingUp } from 'react-icons/lu'
 import type { Investimento } from '../../types/Investimento'
-import { formatarMoeda } from '../../utils/formatadores'
+import { formatarMoeda, formatarPercentualAno } from '../../utils/formatadores'
 import { Caixa } from '../ui/Caixa'
 
 interface InvestimentosAtivosProps {
@@ -33,7 +33,7 @@ export function InvestimentosAtivos({ investimentos }: InvestimentosAtivosProps)
                 <p className="truncate text-sm font-medium text-gray-900">{investimento.nomeInvestimento}</p>
                 <p className="text-xs text-gray-500">
                   {investimento.tipoInvestimento}
-                  {investimento.percentualRendimento != null && ` · ${investimento.percentualRendimento}% a.a.`}
+                  {investimento.percentualRendimento != null && ` · ${formatarPercentualAno(investimento.percentualRendimento)}`}
                 </p>
               </div>
               <span className="text-sm font-semibold text-gray-900">{formatarMoeda(investimento.valorAplicado)}</span>
