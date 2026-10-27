@@ -13,11 +13,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ContaService {
+
+    // Formata valores como "R$ 1.234,56" nas mensagens de erro
+    private static final NumberFormat MOEDA = NumberFormat.getCurrencyInstance(Locale.of("pt", "BR"));
 
     @Autowired
     private ContaRepository contaRepository;
@@ -101,7 +106,7 @@ public class ContaService {
         BigDecimal novoSaldo = conta.getSaldoDisponivel().add(valor);
         if (novoSaldo.signum() < 0) {
             throw new RegraNegocioException("Saldo insuficiente: a conta " + conta.getNumeroConta()
-                    + " tem R$ " + conta.getSaldoDisponivel() + " disponíveis");
+                    + " tem " + MOEDA.format(conta.getSaldoDisponivel()) + " disponíveis");
         }
         conta.setSaldoDisponivel(novoSaldo);
         conta.setSaldoTotal(novoSaldo.add(conta.getSaldoBloqueado()));
