@@ -4,6 +4,13 @@ export function formatarMoeda(valor: number | null | undefined): string {
   return moeda.format(valor ?? 0)
 }
 
+const numero = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 })
+
+// 11.2 -> '11,2% a.a.'
+export function formatarPercentualAno(valor: number | null | undefined): string {
+  return valor == null ? '—' : `${numero.format(valor)}% a.a.`
+}
+
 // '2026-10-01' -> '01/10/2026' (sem passar por Date, para não sofrer com fuso horário)
 export function formatarData(data: string | null | undefined): string {
   if (!data) {
@@ -11,6 +18,20 @@ export function formatarData(data: string | null | undefined): string {
   }
   const [ano, mes, dia] = data.split('-')
   return `${dia}/${mes}/${ano}`
+}
+
+// '12345678909' -> '123.456.789-09'
+export function formatarCpf(cpf: string): string {
+  return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4')
+}
+
+export function somenteNumeros(texto: string): string {
+  return texto.replace(/\D/g, '')
+}
+
+// Texto de um <input type="number"> para número; vazio vira null
+export function paraNumero(texto: string): number | null {
+  return texto.trim() === '' ? null : Number(texto)
 }
 
 // 'Ana Paula Souza' -> 'AS'

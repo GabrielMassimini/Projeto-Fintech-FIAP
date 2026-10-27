@@ -1,7 +1,8 @@
-import type { ButtonHTMLAttributes } from 'react'
+import type { ComponentProps } from 'react'
 import { classesBotao, type VarianteBotao } from './estilosBotao'
 
-interface BotaoProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+// ComponentProps<'button'> inclui o ref (React 19 permite passar ref como prop)
+interface BotaoProps extends ComponentProps<'button'> {
   variante?: VarianteBotao
 }
 
