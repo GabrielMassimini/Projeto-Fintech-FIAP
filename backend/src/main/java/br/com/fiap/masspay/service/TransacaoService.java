@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransacaoService {
@@ -50,8 +51,12 @@ public class TransacaoService {
     }
 
     public Transacao buscarPorId(Long id) {
-        return transacaoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Transação não encontrada"));
+        Optional<Transacao> transacaoOptional = transacaoRepository.findById(id);
+        if (transacaoOptional.isPresent()) {
+            return transacaoOptional.get();
+        } else {
+            throw new RecursoNaoEncontradoException("Transação não encontrada");
+        }
     }
 
     // Filtros opcionais: por conta ou por usuário (todas as contas dele)

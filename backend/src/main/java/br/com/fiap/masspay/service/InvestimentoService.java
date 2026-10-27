@@ -12,11 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InvestimentoService {
-
-    private static final String ATIVO = "ATIVO";
 
     @Autowired
     private InvestimentoRepository investimentoRepository;
@@ -38,7 +37,7 @@ public class InvestimentoService {
             investimento.setDataAplicacao(LocalDate.now());
         }
         validarDatas(investimento);
-        investimento.setStatusInvestimento(ATIVO);
+        investimento.setStatusInvestimento("ATIVO");
         investimento.setDataCadastro(LocalDate.now());
 
         contaService.movimentarSaldo(conta, investimento.getValorAplicado().negate());
@@ -46,8 +45,12 @@ public class InvestimentoService {
     }
 
     public Investimento buscarPorId(Long id) {
-        return investimentoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Investimento não encontrado"));
+        Optional<Investimento> investimentoOptional = investimentoRepository.findById(id);
+        if (investimentoOptional.isPresent()) {
+            return investimentoOptional.get();
+        } else {
+            throw new RecursoNaoEncontradoException("Investimento não encontrado");
+        }
     }
 
     // Filtros opcionais: por conta ou por usuário (todas as contas dele)
@@ -61,32 +64,40 @@ public class InvestimentoService {
         return investimentoRepository.findAllByOrderByDataAplicacaoDescIdDesc();
     }
 
-    /*
-     * Enquanto o investimento está ATIVO:
-     *  - mudar o valor aplicado debita (ou devolve) a diferença na conta;
-     *  - mudar o status para RESGATADO ou ENCERRADO devolve valor + rendimento para a conta.
-     * Depois de resgatado ou encerrado, valor e rendimento ficam fixos e ele não volta a ser ATIVO.
-     */
     @Transactional
     public Investimento atualizar(Long id, Investimento dados) {
         Investimento investimento = buscarPorId(id);
         Conta conta = investimento.getConta();
-        String novoStatus = dados.getStatusInvestimento() == null
-                ? investimento.getStatusInvestimento()
-                : dados.getStatusInvestimento();
-        BigDecimal novoRendimento = dados.getRendimento() == null ? BigDecimal.ZERO : dados.getRendimento();
 
-        if (ATIVO.equals(investimento.getStatusInvestimento())) {
-            BigDecimal movimento = investimento.getValorAplicado().subtract(dados.getValorAplicado());
-            if (!ATIVO.equals(novoStatus)) {
-                movimento = movimento.add(dados.getValorAplicado()).add(novoRendimento);
+        String statusAtual = investimento.getStatusInvestimento();
+        String novoStatus = dados.getStatusInvestimento();
+        if (novoStatus == null) {
+            novoStatus = statusAtual;
+        }
+
+        BigDecimal rendimentoAtual = investimento.getRendimento();
+        if (rendimentoAtual == null) {
+            rendimentoAtual = BigDecimal.ZERO;
+        }
+        BigDecimal novoRendimento = dados.getRendimento();
+        if (novoRendimento == null) {
+            novoRendimento = BigDecimal.ZERO;
+        }
+
+        if (statusAtual.equals("ATIVO")) {
+            // 1. Se o valor aplicado mudou, a diferença sai da conta (ou volta para ela)
+            BigDecimal diferenca = dados.getValorAplicado().subtract(investimento.getValorAplicado());
+            contaService.movimentarSaldo(conta, diferenca.negate());
+
+            // 2. Se está sendo resgatado ou encerrado, o valor aplicado + rendimento voltam para a conta
+            if (!novoStatus.equals("ATIVO")) {
+                contaService.movimentarSaldo(conta, dados.getValorAplicado().add(novoRendimento));
             }
-            contaService.movimentarSaldo(conta, movimento);
         } else {
-            if (ATIVO.equals(novoStatus)) {
+            // Já foi resgatado: o dinheiro já voltou para a conta, então valor e rendimento não mudam mais
+            if (novoStatus.equals("ATIVO")) {
                 throw new RegraNegocioException("Um investimento resgatado ou encerrado não pode voltar a ficar ATIVO");
             }
-            BigDecimal rendimentoAtual = investimento.getRendimento() == null ? BigDecimal.ZERO : investimento.getRendimento();
             if (dados.getValorAplicado().compareTo(investimento.getValorAplicado()) != 0
                     || novoRendimento.compareTo(rendimentoAtual) != 0) {
                 throw new RegraNegocioException("O valor e o rendimento de um investimento resgatado não podem mudar");
@@ -112,7 +123,7 @@ public class InvestimentoService {
     @Transactional
     public void excluir(Long id) {
         Investimento investimento = buscarPorId(id);
-        if (ATIVO.equals(investimento.getStatusInvestimento())) {
+        if (investimento.getStatusInvestimento().equals("ATIVO")) {
             contaService.movimentarSaldo(investimento.getConta(), investimento.getValorAplicado());
         }
         investimentoRepository.delete(investimento);

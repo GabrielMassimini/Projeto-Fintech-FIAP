@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -29,7 +30,7 @@ public class UsuarioService {
         if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
             throw new RegraNegocioException("A senha é obrigatória");
         }
-        usuario.setEmail(normalizarEmail(usuario.getEmail()));
+        usuario.setEmail(usuario.getEmail().trim().toLowerCase());
         validarIdade(usuario.getDataNascimento());
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new ConflitoException("Já existe um usuário com este e-mail");
@@ -48,8 +49,12 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorId(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            return usuarioOptional.get();
+        } else {
+            throw new RecursoNaoEncontradoException("Usuário não encontrado");
+        }
     }
 
     public List<Usuario> listarTodos() {
@@ -58,7 +63,7 @@ public class UsuarioService {
 
     public Usuario atualizar(Long id, Usuario dados) {
         Usuario usuario = buscarPorId(id);
-        dados.setEmail(normalizarEmail(dados.getEmail()));
+        dados.setEmail(dados.getEmail().trim().toLowerCase());
         validarIdade(dados.getDataNascimento());
         if (usuarioRepository.existsByEmailAndIdNot(dados.getEmail(), id)) {
             throw new ConflitoException("Já existe um usuário com este e-mail");
@@ -91,9 +96,14 @@ public class UsuarioService {
     }
 
     public Usuario autenticar(String email, String senha) {
-        Usuario usuario = usuarioRepository.findByEmail(normalizarEmail(email))
-                .orElseThrow(CredenciaisInvalidasException::new);
-        if (!SenhaUtil.confere(senha, usuario.getSenhaHash()) || !"ATIVO".equals(usuario.getStatus())) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email.trim().toLowerCase());
+        if (usuarioOptional.isEmpty()) {
+            throw new CredenciaisInvalidasException();
+        }
+
+        Usuario usuario = usuarioOptional.get();
+        // Senha errada ou usuário inativo: a mesma mensagem, para não dar pistas
+        if (!SenhaUtil.confere(senha, usuario.getSenhaHash()) || !usuario.getStatus().equals("ATIVO")) {
             throw new CredenciaisInvalidasException();
         }
         return usuario;
@@ -104,9 +114,5 @@ public class UsuarioService {
         if (idade < IDADE_MINIMA) {
             throw new RegraNegocioException("O usuário precisa ter pelo menos " + IDADE_MINIMA + " anos");
         }
-    }
-
-    private String normalizarEmail(String email) {
-        return email == null ? null : email.trim().toLowerCase();
     }
 }

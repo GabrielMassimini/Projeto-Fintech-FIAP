@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class ContaService {
@@ -59,8 +60,12 @@ public class ContaService {
     }
 
     public Conta buscarPorId(Long id) {
-        return contaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Conta não encontrada"));
+        Optional<Conta> contaOptional = contaRepository.findById(id);
+        if (contaOptional.isPresent()) {
+            return contaOptional.get();
+        } else {
+            throw new RecursoNaoEncontradoException("Conta não encontrada");
+        }
     }
 
     // Sem filtro, lista todas; com usuarioId, só as contas daquele usuário
