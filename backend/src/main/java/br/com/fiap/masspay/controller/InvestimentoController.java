@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/investimentos")
+@CrossOrigin(origins = "http://localhost:5173") // libera o frontend React (Vite)
 public class InvestimentoController {
 
     @Autowired

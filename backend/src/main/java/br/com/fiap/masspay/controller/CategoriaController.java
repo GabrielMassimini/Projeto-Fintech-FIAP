@@ -11,6 +11,7 @@ import java.util.List;
 // Só consulta: usada pelo frontend para montar a lista de categorias da transação
 @RestController
 @RequestMapping("/api/categorias")
+@CrossOrigin(origins = "http://localhost:5173") // libera o frontend React (Vite)
 public class CategoriaController {
 
     @Autowired
