@@ -11,7 +11,7 @@ Plataforma de uma fintech fictícia que desenvolvi ao longo do primeiro ano do c
 A versão final tem duas partes que conversam por uma API REST:
 
 - **Backend** (`backend/`): API em Spring Boot ligada ao Oracle da FIAP, com CRUD de usuários, contas, transações e investimentos, além de login por e-mail e senha.
-- **Frontend** (`frontend/`): aplicação React (SPA) com login, página inicial, página de erro personalizada e páginas para consultar, cadastrar, editar e excluir cada uma das quatro entidades.
+- **Frontend** (`frontend/`): aplicação React (SPA) com login, página inicial, página de erro personalizada, páginas para consultar, cadastrar, editar e excluir cada uma das quatro entidades e uma página para consultar as categorias.
 
 Regras de negócio que a API aplica:
 

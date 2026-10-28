@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { LayoutPrivado } from './components/layout/LayoutPrivado'
+import { CategoriasPage } from './pages/CategoriasPage'
 import { ContaFormPage } from './pages/contas/ContaFormPage'
 import { ContasPage } from './pages/contas/ContasPage'
 import { InicioPage } from './pages/InicioPage'
@@ -32,6 +33,8 @@ function App() {
         <Route path="investimentos" element={<InvestimentosPage />} />
         <Route path="investimentos/novo" element={<InvestimentoFormPage />} />
         <Route path="investimentos/:id/editar" element={<InvestimentoFormPage />} />
+
+        <Route path="categorias" element={<CategoriasPage />} />
 
         <Route path="usuarios" element={<UsuariosPage />} />
         <Route path="usuarios/novo" element={<UsuarioFormPage />} />

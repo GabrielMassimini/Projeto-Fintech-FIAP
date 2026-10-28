@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import type { IconType } from 'react-icons'
-import { LuArrowLeftRight, LuLayoutDashboard, LuLogOut, LuTrendingUp, LuUsers, LuWallet, LuX } from 'react-icons/lu'
+import { LuArrowLeftRight, LuLayoutDashboard, LuLogOut, LuTags, LuTrendingUp, LuUsers, LuWallet, LuX } from 'react-icons/lu'
 import { useAuth } from '../../contexts/AuthContext/useAuth'
 import { Logo } from '../ui/Logo'
 
@@ -15,6 +15,7 @@ const itens: ItemMenu[] = [
   { para: '/contas', rotulo: 'Contas', icone: LuWallet },
   { para: '/transacoes', rotulo: 'Transações', icone: LuArrowLeftRight },
   { para: '/investimentos', rotulo: 'Investimentos', icone: LuTrendingUp },
+  { para: '/categorias', rotulo: 'Categorias', icone: LuTags },
   { para: '/usuarios', rotulo: 'Usuários', icone: LuUsers },
 ]
 
