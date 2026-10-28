@@ -88,7 +88,7 @@ export function ContaFormulario({ usuarioId, inicial, aoSalvar, aoCancelar }: Co
 
         {edicao && (
           <p className="mt-4 flex items-start gap-2 rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
-            <LuInfo className="mt-0.5 shrink-0" aria-hidden />
+            <LuInfo className="mt-0.5 shrink-0" />
             Saldo atual: <strong className="text-gray-900">{formatarMoeda(inicial.saldoDisponivel)}</strong>. O saldo só muda
             por transações e investimentos.
           </p>
@@ -99,7 +99,7 @@ export function ContaFormulario({ usuarioId, inicial, aoSalvar, aoCancelar }: Co
           Cancelar
         </Botao>
         <Botao type="submit" disabled={enviando}>
-          <LuSave aria-hidden /> {enviando ? 'Salvando...' : 'Salvar'}
+          <LuSave /> {enviando ? 'Salvando...' : 'Salvar'}
         </Botao>
       </div>
     </form>

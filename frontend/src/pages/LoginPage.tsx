@@ -41,8 +41,8 @@ export function LoginPage() {
     <div className="flex min-h-screen">
       {/* Lado da marca (só em telas grandes) */}
       <div className="relative hidden flex-1 flex-col justify-between overflow-hidden bg-linear-to-br from-rosa to-rosa-escuro p-12 text-white lg:flex">
-        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/10" aria-hidden />
-        <div className="absolute -bottom-32 -left-20 h-96 w-96 rounded-full bg-white/10" aria-hidden />
+        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/10" />
+        <div className="absolute -bottom-32 -left-20 h-96 w-96 rounded-full bg-white/10" />
         <div className="relative w-fit rounded-2xl bg-white px-2">
           <Logo className="h-16 w-44" />
         </div>
@@ -50,13 +50,13 @@ export function LoginPage() {
           <h1 className="mb-4 text-4xl font-bold leading-tight">Seu dinheiro, organizado em um só lugar.</h1>
           <ul className="space-y-3 text-white/90">
             <li className="flex items-center gap-3">
-              <LuWallet aria-hidden /> Contas, receitas e despesas sempre atualizadas
+              <LuWallet /> Contas, receitas e despesas sempre atualizadas
             </li>
             <li className="flex items-center gap-3">
-              <LuTrendingUp aria-hidden /> Acompanhe seus investimentos
+              <LuTrendingUp /> Acompanhe seus investimentos
             </li>
             <li className="flex items-center gap-3">
-              <LuShieldCheck aria-hidden /> Senha protegida com criptografia
+              <LuShieldCheck /> Senha protegida com criptografia
             </li>
           </ul>
         </div>
@@ -93,7 +93,7 @@ export function LoginPage() {
               required
             />
             <Botao type="submit" className="w-full" disabled={enviando || !email || !senha}>
-              <LuLogIn aria-hidden />
+              <LuLogIn />
               {enviando ? 'Entrando...' : 'Entrar'}
             </Botao>
           </form>

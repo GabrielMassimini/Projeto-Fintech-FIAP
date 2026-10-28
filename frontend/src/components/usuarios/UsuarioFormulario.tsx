@@ -117,7 +117,7 @@ export function UsuarioFormulario({ inicial, aoSalvar, aoCancelar }: UsuarioForm
           Cancelar
         </Botao>
         <Botao type="submit" disabled={enviando}>
-          <LuSave aria-hidden /> {enviando ? 'Salvando...' : 'Salvar'}
+          <LuSave /> {enviando ? 'Salvando...' : 'Salvar'}
         </Botao>
       </div>
     </form>

@@ -4,10 +4,9 @@ import { iniciais, primeiroNome } from '../../utils/formatadores'
 
 interface CabecalhoProps {
   aoAbrirMenu: () => void
-  menuAberto: boolean
 }
 
-export function Cabecalho({ aoAbrirMenu, menuAberto }: CabecalhoProps) {
+export function Cabecalho({ aoAbrirMenu }: CabecalhoProps) {
   const { usuario } = useAuth()
   const nome = usuario?.nomeCompleto ?? ''
 
@@ -19,8 +18,6 @@ export function Cabecalho({ aoAbrirMenu, menuAberto }: CabecalhoProps) {
           onClick={aoAbrirMenu}
           className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
           aria-label="Abrir menu de navegação"
-          aria-controls="barra-lateral"
-          aria-expanded={menuAberto}
         >
           <LuMenu className="text-xl" />
         </button>

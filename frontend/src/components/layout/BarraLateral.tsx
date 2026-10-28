@@ -32,11 +32,9 @@ export function BarraLateral({ aberta, aoFechar }: BarraLateralProps) {
       <div
         className={`fixed inset-0 z-30 bg-gray-900/40 transition-opacity lg:hidden ${aberta ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
         onClick={aoFechar}
-        aria-hidden
       />
 
       <aside
-        id="barra-lateral"
         className={`fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-gray-100 bg-white transition-transform duration-300 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 ${
           aberta ? 'translate-x-0 shadow-xl' : '-translate-x-full'
         }`}
@@ -53,23 +51,23 @@ export function BarraLateral({ aberta, aoFechar }: BarraLateralProps) {
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Menu principal">
+        <nav className="flex-1 overflow-y-auto px-3 py-4">
           <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Menu</p>
           <ul className="space-y-1">
-            {itens.map(({ para, rotulo, icone: Icone }) => (
-              <li key={para}>
+            {itens.map((item) => (
+              <li key={item.para}>
                 <NavLink
-                  to={para}
-                  end={para === '/'}
+                  to={item.para}
+                  end={item.para === '/'}
                   onClick={aoFechar}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rosa ${
+                    `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
                       isActive ? 'bg-rosa-claro text-rosa' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`
                   }
                 >
-                  <Icone className="text-lg" aria-hidden />
-                  {rotulo}
+                  <item.icone className="text-lg" />
+                  {item.rotulo}
                 </NavLink>
               </li>
             ))}
@@ -80,9 +78,9 @@ export function BarraLateral({ aberta, aoFechar }: BarraLateralProps) {
           <button
             type="button"
             onClick={sair}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
           >
-            <LuLogOut className="text-lg" aria-hidden />
+            <LuLogOut className="text-lg" />
             Sair
           </button>
         </div>

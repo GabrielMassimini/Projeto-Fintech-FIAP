@@ -178,7 +178,7 @@ export function InvestimentoFormulario({ contas, inicial, aoSalvar, aoCancelar }
         </div>
 
         <p className="mt-4 flex items-start gap-2 rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">
-          <LuInfo className="mt-0.5 shrink-0" aria-hidden />
+          <LuInfo className="mt-0.5 shrink-0" />
           {!edicao && contaEscolhida && (
             <span>
               O valor sai do saldo disponível da conta {contaEscolhida.numeroConta} ({formatarMoeda(contaEscolhida.saldoDisponivel)}).
@@ -199,7 +199,7 @@ export function InvestimentoFormulario({ contas, inicial, aoSalvar, aoCancelar }
           Cancelar
         </Botao>
         <Botao type="submit" disabled={enviando}>
-          <LuSave aria-hidden /> {enviando ? 'Salvando...' : 'Salvar'}
+          <LuSave /> {enviando ? 'Salvando...' : 'Salvar'}
         </Botao>
       </div>
     </form>

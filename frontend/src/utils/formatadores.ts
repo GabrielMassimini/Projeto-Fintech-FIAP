@@ -8,13 +8,13 @@ const numero = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 })
 
 // 11.2 -> '11,2% a.a.'
 export function formatarPercentualAno(valor: number | null | undefined): string {
-  return valor == null ? '—' : `${numero.format(valor)}% a.a.`
+  return valor == null ? '-' : `${numero.format(valor)}% a.a.`
 }
 
 // '2026-10-01' -> '01/10/2026' (sem passar por Date, para não sofrer com fuso horário)
 export function formatarData(data: string | null | undefined): string {
   if (!data) {
-    return '—'
+    return '-'
   }
   const [ano, mes, dia] = data.split('-')
   return `${dia}/${mes}/${ano}`

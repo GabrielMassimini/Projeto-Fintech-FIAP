@@ -35,7 +35,7 @@ export function TransacoesRecentes({ transacoes, limite = 5 }: TransacoesRecente
                     receita ? 'bg-green-100 text-green-600' : 'bg-rosa-claro text-rosa'
                   }`}
                 >
-                  <Icone aria-hidden />
+                  <Icone />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-gray-900">{transacao.descricao}</p>

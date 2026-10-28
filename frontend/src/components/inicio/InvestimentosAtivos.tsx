@@ -27,7 +27,7 @@ export function InvestimentosAtivos({ investimentos }: InvestimentosAtivosProps)
           {ativos.map((investimento) => (
             <li key={investimento.id} className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
-                <LuTrendingUp aria-hidden />
+                <LuTrendingUp />
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900">{investimento.nomeInvestimento}</p>

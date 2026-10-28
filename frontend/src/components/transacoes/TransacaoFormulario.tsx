@@ -136,11 +136,11 @@ export function TransacaoFormulario({ contas, categorias, inicial, aoSalvar, aoC
           >
             {categoriaEscolhida.tipoMovimentacao === 'RECEITA' ? (
               <>
-                <LuArrowDownLeft aria-hidden /> Receita: o valor entra no saldo da conta {contaEscolhida.numeroConta}.
+                <LuArrowDownLeft /> Receita: o valor entra no saldo da conta {contaEscolhida.numeroConta}.
               </>
             ) : (
               <>
-                <LuArrowUpRight aria-hidden /> Despesa: o valor sai do saldo da conta {contaEscolhida.numeroConta} (
+                <LuArrowUpRight /> Despesa: o valor sai do saldo da conta {contaEscolhida.numeroConta} (
                 {formatarMoeda(contaEscolhida.saldoDisponivel)} disponíveis).
               </>
             )}
@@ -152,7 +152,7 @@ export function TransacaoFormulario({ contas, categorias, inicial, aoSalvar, aoC
           Cancelar
         </Botao>
         <Botao type="submit" disabled={enviando}>
-          <LuSave aria-hidden /> {enviando ? 'Salvando...' : 'Salvar'}
+          <LuSave /> {enviando ? 'Salvando...' : 'Salvar'}
         </Botao>
       </div>
     </form>

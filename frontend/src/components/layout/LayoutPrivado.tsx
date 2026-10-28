@@ -18,7 +18,7 @@ export function LayoutPrivado() {
     <div className="flex min-h-screen">
       <BarraLateral aberta={menuAberto} aoFechar={() => setMenuAberto(false)} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Cabecalho aoAbrirMenu={() => setMenuAberto(true)} menuAberto={menuAberto} />
+        <Cabecalho aoAbrirMenu={() => setMenuAberto(true)} />
         <main className="flex-1 p-4 sm:p-6">
           {/* Aqui o React Router desenha a página da rota atual */}
           <Outlet />

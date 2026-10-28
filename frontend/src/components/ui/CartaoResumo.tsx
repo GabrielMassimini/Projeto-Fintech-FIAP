@@ -35,7 +35,7 @@ export function CartaoResumo({ titulo, valor, rodape, icone: Icone, destaque = f
       <div className="mb-3 flex items-center justify-between">
         <span className={`text-sm font-medium ${destaque ? 'text-white/85' : 'text-gray-500'}`}>{titulo}</span>
         <span className={`rounded-lg p-2 ${destaque ? 'bg-white/20 text-white' : coresIcone[cor]}`}>
-          <Icone aria-hidden />
+          <Icone />
         </span>
       </div>
       <p className="text-2xl font-bold tracking-tight">{valor}</p>

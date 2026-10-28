@@ -29,7 +29,7 @@ export function MinhasContas({ contas }: MinhasContasProps) {
           {contas.map((conta) => (
             <li key={conta.id} className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-rosa-claro text-rosa">
-                <LuWallet aria-hidden />
+                <LuWallet />
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-gray-900">Conta {conta.numeroConta}</p>

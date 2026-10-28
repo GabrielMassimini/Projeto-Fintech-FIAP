@@ -22,10 +22,10 @@ export function NaoEncontradoPage() {
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Botao variante="secundario" onClick={() => navigate(-1)}>
-          <LuArrowLeft aria-hidden /> Voltar
+          <LuArrowLeft /> Voltar
         </Botao>
         <BotaoLink to="/">
-          <LuHouse aria-hidden /> Ir para o início
+          <LuHouse /> Ir para o início
         </BotaoLink>
       </div>
     </div>

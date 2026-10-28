@@ -12,7 +12,7 @@ export function Alerta({ tipo = 'erro', children }: AlertaProps) {
   const Icone = tipo === 'erro' ? LuCircleAlert : LuCircleCheck
   return (
     <div role={tipo === 'erro' ? 'alert' : 'status'} className={`flex items-start gap-2 rounded-xl border px-4 py-3 text-sm ${estilos}`}>
-      <Icone className="mt-0.5 shrink-0" aria-hidden />
+      <Icone className="mt-0.5 shrink-0" />
       <div>{children}</div>
     </div>
   )
