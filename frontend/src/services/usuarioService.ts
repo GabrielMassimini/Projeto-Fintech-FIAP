@@ -2,9 +2,9 @@ import type { Usuario, UsuarioForm } from '../types/Usuario'
 import { api } from './api'
 
 export const usuarioService = {
-  listar: () => api.get<Usuario[]>('/usuarios'),
-  buscar: (id: number) => api.get<Usuario>(`/usuarios/${id}`),
-  criar: (dados: UsuarioForm) => api.post<Usuario>('/usuarios', dados),
-  atualizar: (id: number, dados: UsuarioForm) => api.put<Usuario>(`/usuarios/${id}`, dados),
+  listar: (): Promise<Usuario[]> => api.get('/usuarios'),
+  buscar: (id: number): Promise<Usuario> => api.get(`/usuarios/${id}`),
+  criar: (dados: UsuarioForm): Promise<Usuario> => api.post('/usuarios', dados),
+  atualizar: (id: number, dados: UsuarioForm): Promise<Usuario> => api.put(`/usuarios/${id}`, dados),
   excluir: (id: number) => api.delete(`/usuarios/${id}`),
 }

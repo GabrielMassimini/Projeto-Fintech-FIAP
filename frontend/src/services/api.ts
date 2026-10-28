@@ -1,7 +1,7 @@
 // Endereço da API vem do arquivo .env (VITE_API_URL)
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api'
 
-// Erro padronizado: a API devolve { status, mensagem, campos } quando algo dá errado
+// Erro da API: o backend devolve { status, mensagem, campos } quando algo dá errado
 export class ErroApi extends Error {
   status: number
   campos: Record<string, string> | null
@@ -13,12 +13,13 @@ export class ErroApi extends Error {
   }
 }
 
-async function requisicao<T>(caminho: string, opcoes: RequestInit = {}): Promise<T> {
+// Faz a chamada com fetch e já trata os erros da API
+async function requisicao(caminho: string, opcoes: RequestInit = {}) {
   let resposta: Response
   try {
     resposta = await fetch(`${API_URL}${caminho}`, {
       ...opcoes,
-      headers: { 'Content-Type': 'application/json', ...opcoes.headers },
+      headers: { 'Content-Type': 'application/json' },
     })
   } catch {
     throw new ErroApi(0, 'Não foi possível conectar à API. Verifique se o backend está rodando.')
@@ -31,21 +32,19 @@ async function requisicao<T>(caminho: string, opcoes: RequestInit = {}): Promise
 
   // 204 No Content (DELETE) não tem corpo
   if (resposta.status === 204) {
-    return undefined as T
+    return null
   }
-  return resposta.json() as Promise<T>
+  return resposta.json()
 }
 
 export const api = {
-  get: <T>(caminho: string) => requisicao<T>(caminho),
-  post: <T>(caminho: string, corpo: unknown) =>
-    requisicao<T>(caminho, { method: 'POST', body: JSON.stringify(corpo) }),
-  put: <T>(caminho: string, corpo: unknown) =>
-    requisicao<T>(caminho, { method: 'PUT', body: JSON.stringify(corpo) }),
-  delete: (caminho: string) => requisicao<void>(caminho, { method: 'DELETE' }),
+  get: (caminho: string) => requisicao(caminho),
+  post: (caminho: string, corpo: object) => requisicao(caminho, { method: 'POST', body: JSON.stringify(corpo) }),
+  put: (caminho: string, corpo: object) => requisicao(caminho, { method: 'PUT', body: JSON.stringify(corpo) }),
+  delete: (caminho: string) => requisicao(caminho, { method: 'DELETE' }),
 }
 
-// Mensagem amigável para mostrar na tela a partir de qualquer erro
+// Mensagem para mostrar na tela a partir de qualquer erro
 export function mensagemDeErro(erro: unknown): string {
   if (erro instanceof Error) {
     return erro.message

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { LuPlus, LuWallet } from 'react-icons/lu'
 import { AcoesLinha } from '../../components/ui/AcoesLinha'
 import { Alerta } from '../../components/ui/Alerta'
@@ -6,77 +7,66 @@ import { BotaoLink } from '../../components/ui/BotaoLink'
 import { CabecalhoPagina } from '../../components/ui/CabecalhoPagina'
 import { Carregando } from '../../components/ui/Carregando'
 import { EstadoVazio } from '../../components/ui/EstadoVazio'
-import { Etiqueta, type CorEtiqueta } from '../../components/ui/Etiqueta'
+import { Etiqueta } from '../../components/ui/Etiqueta'
 import { ModalConfirmacao } from '../../components/ui/ModalConfirmacao'
-import { Tabela, type Coluna } from '../../components/ui/Tabela'
 import { useAuth } from '../../contexts/AuthContext/useAuth'
-import { useCarregar } from '../../hooks/useCarregar'
-import { useMensagemDaRota } from '../../hooks/useMensagemDaRota'
 import { mensagemDeErro } from '../../services/api'
 import { contaService } from '../../services/contaService'
-import type { Conta, StatusConta } from '../../types/Conta'
+import type { Conta } from '../../types/Conta'
 import { formatarData, formatarMoeda } from '../../utils/formatadores'
 
-const corDoStatus: Record<StatusConta, CorEtiqueta> = {
-  ATIVA: 'verde',
-  BLOQUEADA: 'amarelo',
-  ENCERRADA: 'cinza',
+function corDoStatus(status: string) {
+  if (status === 'ATIVA') return 'verde'
+  if (status === 'BLOQUEADA') return 'amarelo'
+  return 'cinza'
 }
 
 export function ContasPage() {
   const { usuario } = useAuth()
-  const { dados, setDados, carregando, erro } = useCarregar(() => contaService.listar(usuario!.id), [usuario?.id])
-  const mensagemRota = useMensagemDaRota()
+  const location = useLocation()
+  const [contas, setContas] = useState<Conta[]>([])
+  const [carregando, setCarregando] = useState(true)
+  const [erro, setErro] = useState<string | null>(null)
+  const [sucesso, setSucesso] = useState<string | null>(location.state?.mensagem ?? null)
   const [paraExcluir, setParaExcluir] = useState<Conta | null>(null)
   const [excluindo, setExcluindo] = useState(false)
-  const [aviso, setAviso] = useState<{ tipo: 'erro' | 'sucesso'; texto: string } | null>(null)
 
-  const contas = dados ?? []
-  const saldoTotal = contas.reduce((total, conta) => total + conta.saldoDisponivel, 0)
+  useEffect(() => {
+    async function carregar() {
+      try {
+        setContas(await contaService.listar(usuario!.id))
+      } catch (e) {
+        setErro(mensagemDeErro(e))
+      } finally {
+        setCarregando(false)
+      }
+    }
+    carregar()
+  }, [usuario])
+
+  let saldoTotal = 0
+  for (const conta of contas) {
+    saldoTotal += conta.saldoDisponivel
+  }
 
   async function confirmarExclusao() {
     if (!paraExcluir) {
       return
     }
     setExcluindo(true)
+    setErro(null)
+    setSucesso(null)
     try {
       await contaService.excluir(paraExcluir.id)
-      setDados(contas.filter((c) => c.id !== paraExcluir.id))
-      setAviso({ tipo: 'sucesso', texto: `Conta ${paraExcluir.numeroConta} excluída.` })
+      setContas(contas.filter((c) => c.id !== paraExcluir.id))
+      setSucesso(`Conta ${paraExcluir.numeroConta} excluída.`)
     } catch (e) {
-      setAviso({ tipo: 'erro', texto: mensagemDeErro(e) })
+      setErro(mensagemDeErro(e))
     } finally {
       setExcluindo(false)
       setParaExcluir(null)
     }
   }
-
-  const colunas: Coluna<Conta>[] = [
-    {
-      titulo: 'Conta',
-      conteudo: (c) => (
-        <div>
-          <p className="font-medium text-gray-900">{c.numeroConta}</p>
-          <p className="text-xs text-gray-500">Agência {c.agencia}</p>
-        </div>
-      ),
-    },
-    { titulo: 'Tipo', conteudo: (c) => (c.tipoConta === 'CORRENTE' ? 'Corrente' : 'Poupança') },
-    {
-      titulo: 'Saldo disponível',
-      alinharDireita: true,
-      conteudo: (c) => <span className="font-semibold text-gray-900">{formatarMoeda(c.saldoDisponivel)}</span>,
-    },
-    { titulo: 'Abertura', conteudo: (c) => formatarData(c.dataAbertura) },
-    { titulo: 'Status', conteudo: (c) => <Etiqueta cor={corDoStatus[c.statusConta]}>{c.statusConta}</Etiqueta> },
-    {
-      titulo: 'Ações',
-      alinharDireita: true,
-      conteudo: (c) => (
-        <AcoesLinha editarPara={`/contas/${c.id}/editar`} aoExcluir={() => setParaExcluir(c)} descricao={`conta ${c.numeroConta}`} />
-      ),
-    },
-  ]
 
   return (
     <>
@@ -85,13 +75,13 @@ export function ContasPage() {
         subtitulo={contas.length > 0 ? `Saldo somado: ${formatarMoeda(saldoTotal)}` : 'Suas contas no MassPay'}
         acoes={
           <BotaoLink to="/contas/nova">
-            <LuPlus aria-hidden /> Abrir conta
+            <LuPlus /> Abrir conta
           </BotaoLink>
         }
       />
 
       <div className="space-y-4">
-        {aviso ? <Alerta tipo={aviso.tipo}>{aviso.texto}</Alerta> : mensagemRota && <Alerta tipo="sucesso">{mensagemRota}</Alerta>}
+        {sucesso && <Alerta tipo="sucesso">{sucesso}</Alerta>}
         {erro && <Alerta>{erro}</Alerta>}
 
         {carregando ? (
@@ -102,7 +92,39 @@ export function ContasPage() {
             <BotaoLink to="/contas/nova">Abrir conta</BotaoLink>
           </EstadoVazio>
         ) : (
-          <Tabela colunas={colunas} itens={contas} chave={(c) => c.id} />
+          <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white shadow-sm">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
+                <tr>
+                  <th className="px-4 py-3">Conta</th>
+                  <th className="px-4 py-3">Tipo</th>
+                  <th className="px-4 py-3 text-right">Saldo disponível</th>
+                  <th className="px-4 py-3">Abertura</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {contas.map((c) => (
+                  <tr key={c.id} className="hover:bg-rosa-xclaro/60">
+                    <td className="px-4 py-3">
+                      <p className="font-medium text-gray-900">{c.numeroConta}</p>
+                      <p className="text-xs text-gray-500">Agência {c.agencia}</p>
+                    </td>
+                    <td className="px-4 py-3">{c.tipoConta === 'CORRENTE' ? 'Corrente' : 'Poupança'}</td>
+                    <td className="px-4 py-3 text-right font-semibold text-gray-900">{formatarMoeda(c.saldoDisponivel)}</td>
+                    <td className="px-4 py-3">{formatarData(c.dataAbertura)}</td>
+                    <td className="px-4 py-3">
+                      <Etiqueta cor={corDoStatus(c.statusConta)}>{c.statusConta}</Etiqueta>
+                    </td>
+                    <td className="px-4 py-3">
+                      <AcoesLinha editarPara={`/contas/${c.id}/editar`} aoExcluir={() => setParaExcluir(c)} descricao={`conta ${c.numeroConta}`} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 

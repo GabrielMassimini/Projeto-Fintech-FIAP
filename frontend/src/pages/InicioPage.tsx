@@ -29,28 +29,20 @@ export function InicioPage() {
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState<string | null>(null)
 
+  // Busca as contas, transações e investimentos do usuário logado
   useEffect(() => {
-    if (!usuario) {
-      return
+    async function carregar() {
+      try {
+        setContas(await contaService.listar(usuario!.id))
+        setTransacoes(await transacaoService.listarDoUsuario(usuario!.id))
+        setInvestimentos(await investimentoService.listarDoUsuario(usuario!.id))
+      } catch (e) {
+        setErro(mensagemDeErro(e))
+      } finally {
+        setCarregando(false)
+      }
     }
-    let ativo = true // evita atualizar o estado se a página fechar antes da resposta
-    Promise.all([
-      contaService.listar(usuario.id),
-      transacaoService.listarDoUsuario(usuario.id),
-      investimentoService.listarDoUsuario(usuario.id),
-    ])
-      .then(([contasApi, transacoesApi, investimentosApi]) => {
-        if (ativo) {
-          setContas(contasApi)
-          setTransacoes(transacoesApi)
-          setInvestimentos(investimentosApi)
-        }
-      })
-      .catch((e) => ativo && setErro(mensagemDeErro(e)))
-      .finally(() => ativo && setCarregando(false))
-    return () => {
-      ativo = false
-    }
+    carregar()
   }, [usuario])
 
   if (carregando) {
@@ -74,10 +66,10 @@ export function InicioPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <BotaoLink to="/investimentos/novo" variante="secundario">
-            <LuTrendingUp aria-hidden /> Novo investimento
+            <LuTrendingUp /> Novo investimento
           </BotaoLink>
           <BotaoLink to="/transacoes/nova">
-            <LuPlus aria-hidden /> Nova transação
+            <LuPlus /> Nova transação
           </BotaoLink>
         </div>
       </div>

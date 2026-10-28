@@ -1,23 +1,38 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ContaFormulario } from '../../components/contas/ContaFormulario'
 import { Alerta } from '../../components/ui/Alerta'
 import { CabecalhoPagina } from '../../components/ui/CabecalhoPagina'
 import { Carregando } from '../../components/ui/Carregando'
 import { useAuth } from '../../contexts/AuthContext/useAuth'
-import { useCarregar } from '../../hooks/useCarregar'
+import { mensagemDeErro } from '../../services/api'
 import { contaService } from '../../services/contaService'
-import type { ContaForm } from '../../types/Conta'
+import type { Conta, ContaForm } from '../../types/Conta'
 
 // Atende /contas/nova e /contas/:id/editar
 export function ContaFormPage() {
-  const { id } = useParams<{ id: string }>()
+  const { id } = useParams()
   const edicao = id !== undefined
   const navigate = useNavigate()
   const { usuario } = useAuth()
-  const { dados: conta, carregando, erro } = useCarregar(
-    () => (edicao ? contaService.buscar(Number(id)) : Promise.resolve(null)),
-    [id],
-  )
+  const [conta, setConta] = useState<Conta | undefined>(undefined)
+  const [carregando, setCarregando] = useState(edicao)
+  const [erro, setErro] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function carregar() {
+      try {
+        setConta(await contaService.buscar(Number(id)))
+      } catch (e) {
+        setErro(mensagemDeErro(e))
+      } finally {
+        setCarregando(false)
+      }
+    }
+    if (id) {
+      carregar()
+    }
+  }, [id])
 
   async function salvar(dados: ContaForm) {
     if (edicao) {
@@ -40,12 +55,7 @@ export function ContaFormPage() {
       ) : erro ? (
         <Alerta>{erro}</Alerta>
       ) : (
-        <ContaFormulario
-          usuarioId={usuario!.id}
-          inicial={conta ?? undefined}
-          aoSalvar={salvar}
-          aoCancelar={() => navigate('/contas')}
-        />
+        <ContaFormulario usuarioId={usuario!.id} inicial={conta} aoSalvar={salvar} aoCancelar={() => navigate('/contas')} />
       )}
     </>
   )
