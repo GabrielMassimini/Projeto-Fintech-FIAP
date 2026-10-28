@@ -1,0 +1,4 @@
+# Copie este arquivo para db.properties (na mesma pasta) e coloque
+# o usuário e a senha do Oracle fornecidos pela FIAP.
+spring.datasource.username=RM000000
+spring.datasource.password=SENHA

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Cores e fonte do MassPay, as mesmas do dashboard em HTML/CSS */
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  --color-rosa: #ED145B;
+  --color-rosa-escuro: #C4104A;
+  --color-rosa-claro: #FFE4EE;
+  --color-rosa-xclaro: #FFF5F8;
+}
+
+body {
+  @apply bg-gray-50 text-gray-800 antialiased;
+}
